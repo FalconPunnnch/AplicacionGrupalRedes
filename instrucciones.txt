@@ -1,0 +1,19 @@
+Es necesario tener la última versión del pip instalada, en CMD (como administrador),
+ejecutar el sgte comando:
+
+python -m pip install --upgrade pip
+
+.....................................................................................
+
+Una vez instalada la última versión...
+
+Es necesario instalar las dependencias de: requirements.txt
+con el comando:
+
+pip install -r requirements.txt
+
+...................................................................
+
+Si se necesitan bibliotecas adicionales, favor de agregarlas en 
+requirements.txt 
+para asegurar que todos usemos las mismas dependencias.
