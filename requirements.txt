@@ -1,7 +1,6 @@
 # Para realizar mediciones de red y QoS/QoE
 requests==2.31.0          # Para realizar solicitudes HTTP a las URLs de prueba
 speedtest-cli==2.1.3      # Para medir la velocidad de conexión
-measurement               # Para mediciones varias
 
 # Para gráficos en tiempo real
 matplotlib==3.8.0         # Para gráficos de velocidad, latencia, etc.
@@ -22,6 +21,9 @@ tkinter                   # Interfaz gráfica estándar en Python (no necesita i
 
 # Utilidades adicionales
 schedule                  # Para programar las pruebas en momentos específicos del día
-psutil
-datastorage
-report-generator
+
+#Instalaciones manuales:
+# pip install measurement
+# pip install psutil
+# pip install datastorage
+# pip install report-generator
