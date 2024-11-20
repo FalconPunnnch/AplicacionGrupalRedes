@@ -97,3 +97,43 @@ def realizar_mediciones():
         print(f"Mediciones completadas para: {url}")
     
     return resultados
+
+def realizar_prueba():
+    """Realiza una prueba completa de QoS y QoE en cada URL de prueba configurada en config.py"""
+    # Inicializamos un diccionario para almacenar los resultados de cada URL
+    resultados_finales = {}
+
+    # Iteramos a través de cada URL en la configuración para medir cada parámetro
+    for url in URLS_PRUEBA:
+        print(f"\nIniciando prueba para: {url}")
+        
+        # Medir velocidad de descarga y carga
+        print("Midiendo velocidad...")
+        velocidad_descarga, velocidad_carga = medir_velocidad()
+        
+        # Medir latencia y jitter
+        print("Midiendo latencia y jitter...")
+        latencia, jitter = medir_latencia_jitter(url)
+        
+        # Medir pérdida de paquetes
+        print("Midiendo pérdida de paquetes...")
+        perdida = medir_perdida(url)
+        
+        # Medir tiempo de carga de la página
+        print("Midiendo tiempo de carga de la página...")
+        tiempo_carga = medir_tiempo_carga(url)
+        
+        # Agregamos los resultados de la URL actual al diccionario de resultados finales
+        resultados_finales[url] = {
+            "velocidad_descarga (Mbps)": velocidad_descarga,
+            "velocidad_carga (Mbps)": velocidad_carga,
+            "latencia (ms)": latencia,
+            "jitter (ms)": jitter,
+            "pérdida de paquetes (%)": perdida,
+            "tiempo_carga (s)": tiempo_carga
+        }
+
+        print(f"Prueba completada para: {url}")
+
+    # Retornamos el diccionario con los resultados de cada URL
+    return resultados_finales
