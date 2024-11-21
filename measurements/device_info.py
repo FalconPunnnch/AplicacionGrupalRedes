@@ -15,8 +15,7 @@ def obtener_informacion_dispositivo():
         "cpu_percent": psutil.cpu_percent(interval=1), # Porcentaje de uso de la CPU
         "cpu_count": psutil.cpu_count(logical=False), # Número de núcleos físicos de la CPU
         "cpu_logical_count": psutil.cpu_count(logical=True), # Número total de núcleos lógicos
-    }
-    
+    }  
     return info_dispositivo
 
 def mostrar_info_dispositivo(info_dispositivo):

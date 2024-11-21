@@ -3,7 +3,7 @@ from tkinter import messagebox
 from measurement import realizar_prueba
 from scheduler import programar_prueba
 from report_generator import generar_informe
-from datastorage import guardar_resultado
+from data_storage import guardar_resultado
 from datetime import datetime
 import config
 

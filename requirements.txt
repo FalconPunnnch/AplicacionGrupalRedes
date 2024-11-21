@@ -1,30 +1,22 @@
 # Para realizar mediciones de red y QoS/QoE
-requests          # Para realizar solicitudes HTTP a las URLs de prueba
-speedtest-cli      # Para medir la velocidad de conexión
-speedtest
+requests           # Para realizar solicitudes HTTP a las URLs de prueba
+speedtest          # Para medir la velocidad de conexión
 
 # Para gráficos en tiempo real
 matplotlib         # Para gráficos de velocidad, latencia, etc.
-plotly            # Gráficos interactivos (opcional, para visualización avanzada)
+plotly             # Gráficos interactivos (opcional, para visualización avanzada)
 
 # Para manejo de datos y almacenamiento
 pandas             # Para gestionar y analizar datos
-sqlalchemy        # Para interactuar con bases de datos (si usas SQLite)
+sqlalchemy         # Para interactuar con bases de datos (si usas SQLite)
 
 # Para generar informes en PDF o CSV
-reportlab         # Para crear informes en PDF (opcional)
+reportlab          # Para crear informes en PDF (opcional)
 fpdf               # Alternativa ligera para PDF, fácil de usar
-csv                       # Biblioteca estándar para manejar CSV (no necesita instalación)
 
 # Para la interfaz gráfica
-PyQt5==5.15.9             # Si usas PyQt para la interfaz de escritorio
-tkinter                   # Interfaz gráfica estándar en Python (no necesita instalación)
+PyQt5==5.15.9          # Si usas PyQt para la interfaz de escritorio
+tkinter                # Interfaz gráfica estándar en Python (no necesita instalación)
 
 # Utilidades adicionales
-schedule                  # Para programar las pruebas en momentos específicos del día
-measurement
-psutil
-
-#Instalaciones manuales:
-# pip install datastorage
-# pip install report-generator
+schedule               # Para programar las pruebas en momentos específicos del día
