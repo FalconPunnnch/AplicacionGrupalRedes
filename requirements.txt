@@ -20,3 +20,4 @@ tkinter                # Interfaz gráfica estándar en Python (no necesita inst
 
 # Utilidades adicionales
 schedule               # Para programar las pruebas en momentos específicos del día
+measurement

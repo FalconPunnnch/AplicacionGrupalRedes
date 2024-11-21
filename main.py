@@ -3,9 +3,10 @@ from tkinter import messagebox
 from measurement import realizar_prueba
 from scheduler import programar_prueba
 from report_generator import generar_informe
-from data_storage import guardar_resultado
+from data_storage import guardar_resultado, obtener_resultados
 from datetime import datetime
 import config
+
 
 class Aplicacion:
     def __init__(self, master):
@@ -36,25 +37,33 @@ class Aplicacion:
         self.boton_programar_prueba.pack(pady=10)
 
     def realizar_prueba(self):
-        # Aquí se debe realizar una prueba de medición
+        # Realiza una prueba de medición
         resultado = realizar_prueba("https://example.com")
         self.resultados.append(resultado)
-        messagebox.showinfo("Resultado", "Prueba realizada exitosamente.")
+
+        # Guarda el resultado en la base de datos
+        guardar_resultado(resultado)
+
+        # Notifica al usuario
+        messagebox.showinfo("Resultado", "Prueba realizada y guardada exitosamente.")
 
     def ver_resultados(self):
-        if not self.resultados:
-            messagebox.showwarning("Sin resultados", "No hay resultados de pruebas.")
-            return
+        # Obtiene resultados desde la base de datos
+        resultados_db = obtener_resultados(None)
         
-        # Mostrar resultados de las pruebas realizadas
-        resultados_texto = "\n".join([str(r) for r in self.resultados])
+        if not resultados_db:
+            messagebox.showwarning("Sin resultados", "No hay resultados de pruebas almacenados.")
+            return
+
+        # Mostrar resultados de las pruebas almacenadas
+        resultados_texto = "\n".join([f"ID {r[0]}: {r[1]}, {r[2]} Mbps, {r[5]} ms" for r in resultados_db])
         messagebox.showinfo("Resultados", resultados_texto)
 
     def generar_informe(self):
         if not self.resultados:
             messagebox.showwarning("Sin resultados", "No hay resultados para generar un informe.")
             return
-        
+
         # Generar un informe de los resultados
         fecha_actual = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         archivo_informe = f"Informe_{fecha_actual}.txt"

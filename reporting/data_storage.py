@@ -155,3 +155,21 @@ if __name__ == '__main__':
     
     # Cerrar conexión
     cerrar_conexion(conexion)
+
+def guardar_resultado(resultado):
+    """
+    Guarda un resultado de prueba en la base de datos.
+    :param resultado: Diccionario con los datos del resultado.
+    """
+    conexion = crear_conexion()
+    if not conexion:
+        print("No se pudo establecer la conexión con la base de datos.")
+        return
+    
+    try:
+        almacenar_resultado(conexion, resultado)
+        print(f"Resultado guardado exitosamente: {resultado}")
+    except Error as e:
+        print(f"Error al guardar el resultado: {e}")
+    finally:
+        cerrar_conexion(conexion)
