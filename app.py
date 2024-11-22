@@ -1,11 +1,11 @@
+# app.py
+
 import tkinter as tk
 from tkinter import messagebox
-from measurement import realizar_prueba
-from scheduler import programar_prueba
-from report_generator import generar_informe
-from data_storage import guardar_resultado, obtener_resultados
 from datetime import datetime
 import config
+from mediciones import realizar_prueba
+from data_storage import crear_conexion, crear_tablas, almacenar_resultado, obtener_resultados, limpiar_cache
 
 
 class Aplicacion:
@@ -36,20 +36,29 @@ class Aplicacion:
         self.boton_programar_prueba = tk.Button(self.master, text="Programar Prueba", command=self.programar_prueba)
         self.boton_programar_prueba.pack(pady=10)
 
+        # Botón para limpiar caché
+        self.boton_limpiar_cache = tk.Button(self.master, text="Limpiar Caché", command=self.limpiar_cache)
+        self.boton_limpiar_cache.pack(pady=10)
+        
+        # Crear conexión a la base de datos y tablas
+        self.conexion = crear_conexion()
+        crear_tablas(self.conexion)
+
+        
     def realizar_prueba(self):
         # Realiza una prueba de medición
-        resultado = realizar_prueba("https://example.com")
+        resultado = realizar_prueba("https://www.youtube.com")
         self.resultados.append(resultado)
 
         # Guarda el resultado en la base de datos
-        guardar_resultado(resultado)
+        almacenar_resultado(self.conexion, resultado)
 
         # Notifica al usuario
         messagebox.showinfo("Resultado", "Prueba realizada y guardada exitosamente.")
 
     def ver_resultados(self):
         # Obtiene resultados desde la base de datos
-        resultados_db = obtener_resultados(None)
+        resultados_db = obtener_resultados(self.conexion)
         
         if not resultados_db:
             messagebox.showwarning("Sin resultados", "No hay resultados de pruebas almacenados.")
@@ -67,13 +76,28 @@ class Aplicacion:
         # Generar un informe de los resultados
         fecha_actual = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         archivo_informe = f"Informe_{fecha_actual}.txt"
-        generar_informe(self.resultados, archivo_informe)
+        with open(archivo_informe, "w") as f:
+            for resultado in self.resultados:
+                f.write(f"{resultado}\n")
         messagebox.showinfo("Informe generado", f"Informe guardado como {archivo_informe}")
 
     def programar_prueba(self):
         # Programar una prueba según la configuración de hora
-        hora_programada = programar_prueba(config.PROGRAMACION_PRUEBAS)
+        hora_programada = config.PROGRAMACION_PRUEBAS["mañana"]  # Simplemente elige un valor de ejemplo
         messagebox.showinfo("Prueba Programada", f"Prueba programada para {hora_programada}")
+
+    def limpiar_cache(self):
+        """Elimina todos los resultados almacenados en la base de datos."""
+        conexion = crear_conexion()
+        if not conexion:
+            messagebox.showwarning("Error", "No se pudo establecer la conexión con la base de datos.")
+            return
+        
+        limpiar_cache(conexion)
+        conexion.close()
+
+        messagebox.showinfo("Caché Limpiada", "Los resultados han sido eliminados exitosamente.")
+
 
 
 def main():
