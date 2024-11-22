@@ -1,0 +1,1 @@
+{'url': 'https://www.youtube.com', 'velocidad_descarga': 10.221110643221564, 'velocidad_carga': 41.7892070884182, 'velocidad_pico': 128.23255221962717, 'velocidad_suelo': 5.3631349079343495, 'latencia': 37.15986728357814, 'jitter': 3.0348702293478835, 'perdida_paquetes': 0.8169682501703346, 'tiempo_total': 35.27772222713846, 'momento': 'mañana', 'dispositivo': 'PC'}

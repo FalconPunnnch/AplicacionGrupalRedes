@@ -1,18 +1,17 @@
-# app.py
-
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
 import config
 from mediciones import realizar_prueba
 from data_storage import crear_conexion, crear_tablas, almacenar_resultado, obtener_resultados, limpiar_cache
+import matplotlib.pyplot as plt  # Importar matplotlib para gráficos
 
 
 class Aplicacion:
     def __init__(self, master):
         self.master = master
         self.master.title("QoLab")
-        self.master.geometry("500x400")
+        self.master.geometry("500x500")
 
         self.resultados = []
 
@@ -39,12 +38,15 @@ class Aplicacion:
         # Botón para limpiar caché
         self.boton_limpiar_cache = tk.Button(self.master, text="Limpiar Caché", command=self.limpiar_cache)
         self.boton_limpiar_cache.pack(pady=10)
-        
+
+        # Botón para visualizar métricas
+        self.boton_visualizar_metricas = tk.Button(self.master, text="Visualizar Métricas", command=self.visualizar_metricas)
+        self.boton_visualizar_metricas.pack(pady=10)
+
         # Crear conexión a la base de datos y tablas
         self.conexion = crear_conexion()
         crear_tablas(self.conexion)
 
-        
     def realizar_prueba(self):
         # Realiza una prueba de medición
         resultado = realizar_prueba("https://www.youtube.com")
@@ -98,6 +100,37 @@ class Aplicacion:
 
         messagebox.showinfo("Caché Limpiada", "Los resultados han sido eliminados exitosamente.")
 
+    def visualizar_metricas(self):
+        """Visualiza métricas en gráficos comparativos."""
+        resultados_db = obtener_resultados(self.conexion)
+        
+        if not resultados_db:
+            messagebox.showwarning("Sin resultados", "No hay resultados para visualizar.")
+            return
+
+        # Extraer datos para las gráficas
+        sitios = [r[1] for r in resultados_db]
+        velocidades_descarga = [r[2] for r in resultados_db]
+        velocidades_carga = [r[3] for r in resultados_db]
+        latencias = [r[5] for r in resultados_db]
+
+        # Crear las gráficas
+        fig, ax = plt.subplots(3, 1, figsize=(8, 12))
+
+        ax[0].bar(sitios, velocidades_descarga, color='blue')
+        ax[0].set_title("Velocidad de Descarga (Mbps)")
+        ax[0].set_ylabel("Mbps")
+
+        ax[1].bar(sitios, velocidades_carga, color='green')
+        ax[1].set_title("Velocidad de Carga (Mbps)")
+        ax[1].set_ylabel("Mbps")
+
+        ax[2].bar(sitios, latencias, color='red')
+        ax[2].set_title("Latencia (ms)")
+        ax[2].set_ylabel("ms")
+
+        plt.tight_layout()
+        plt.show()
 
 
 def main():
