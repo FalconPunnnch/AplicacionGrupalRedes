@@ -1,24 +1,29 @@
-# app.py
-
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
 import config
 from mediciones import realizar_prueba
 from data_storage import crear_conexion, crear_tablas, almacenar_resultado, obtener_resultados, limpiar_cache
+import matplotlib.pyplot as plt  # Importar matplotlib para gráficos
 
 
 class Aplicacion:
     def __init__(self, master):
         self.master = master
         self.master.title("QoLab")
-        self.master.geometry("500x400")
+        self.master.geometry("500x500")
 
         self.resultados = []
 
         # Titulo de la ventana
         self.titulo_label = tk.Label(self.master, text="Medición de QoS y QoE", font=("Arial", 18))
         self.titulo_label.pack(pady=20)
+
+        # Campo de entrada para la URL
+        self.url_label = tk.Label(self.master, text="Ingrese la URL a analizar:", font=("Arial", 12))
+        self.url_label.pack(pady=5)
+        self.url_entry = tk.Entry(self.master, width=40)
+        self.url_entry.pack(pady=5)
 
         # Botón para realizar una prueba
         self.boton_realizar_prueba = tk.Button(self.master, text="Realizar Prueba", command=self.realizar_prueba)
@@ -36,18 +41,29 @@ class Aplicacion:
         self.boton_programar_prueba = tk.Button(self.master, text="Programar Prueba", command=self.programar_prueba)
         self.boton_programar_prueba.pack(pady=10)
 
+        # Botón para visualizar métricas
+        self.boton_visualizar_metricas = tk.Button(self.master, text="Visualizar Métricas", command=self.visualizar_metricas)
+        self.boton_visualizar_metricas.pack(pady=10)
+
         # Botón para limpiar caché
         self.boton_limpiar_cache = tk.Button(self.master, text="Limpiar Caché", command=self.limpiar_cache)
         self.boton_limpiar_cache.pack(pady=10)
-        
+
         # Crear conexión a la base de datos y tablas
         self.conexion = crear_conexion()
         crear_tablas(self.conexion)
 
-        
+
     def realizar_prueba(self):
+        # Obtiene la URL del campo de entrada
+        url = self.url_entry.get().strip()
+
+        if not url:
+            messagebox.showwarning("Entrada inválida", "Por favor, ingrese una URL válida.")
+            return
+
         # Realiza una prueba de medición
-        resultado = realizar_prueba("https://www.youtube.com")
+        resultado = realizar_prueba(url)
         self.resultados.append(resultado)
 
         # Guarda el resultado en la base de datos
@@ -86,6 +102,38 @@ class Aplicacion:
         hora_programada = config.PROGRAMACION_PRUEBAS["mañana"]  # Simplemente elige un valor de ejemplo
         messagebox.showinfo("Prueba Programada", f"Prueba programada para {hora_programada}")
 
+    def visualizar_metricas(self):
+        """Visualiza métricas en gráficos comparativos."""
+        resultados_db = obtener_resultados(self.conexion)
+        
+        if not resultados_db:
+            messagebox.showwarning("Sin resultados", "No hay resultados para visualizar.")
+            return
+        
+        # Extraer datos para las gráficas
+        sitios = [r[1] for r in resultados_db]
+        velocidades_descarga = [r[2] for r in resultados_db]
+        velocidades_carga = [r[3] for r in resultados_db]
+        latencias = [r[5] for r in resultados_db]
+
+        # Crear las gráficas
+        fig, ax = plt.subplots(3, 1, figsize=(8, 12))
+
+        ax[0].bar(sitios, velocidades_descarga, color='blue')
+        ax[0].set_title("Velocidad de Descarga (Mbps)")
+        ax[0].set_ylabel("Mbps")
+
+        ax[1].bar(sitios, velocidades_carga, color='green')
+        ax[1].set_title("Velocidad de Carga (Mbps)")
+        ax[1].set_ylabel("Mbps")
+
+        ax[2].bar(sitios, latencias, color='red')
+        ax[2].set_title("Latencia (ms)")
+        ax[2].set_ylabel("ms")
+
+        plt.tight_layout()
+        plt.show()
+
     def limpiar_cache(self):
         """Elimina todos los resultados almacenados en la base de datos."""
         conexion = crear_conexion()
@@ -97,8 +145,6 @@ class Aplicacion:
         conexion.close()
 
         messagebox.showinfo("Caché Limpiada", "Los resultados han sido eliminados exitosamente.")
-
-
 
 def main():
     root = tk.Tk()
