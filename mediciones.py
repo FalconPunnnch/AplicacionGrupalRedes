@@ -1,5 +1,3 @@
-# mediciones.py
-
 import random
 import time
 
