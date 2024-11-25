@@ -29,7 +29,6 @@ def crear_tablas(conexion):
                 jitter REAL,
                 perdida_paquetes REAL,
                 tiempo_total REAL,
-                momento TEXT,
                 dispositivo TEXT,
                 fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
@@ -45,13 +44,13 @@ def almacenar_resultado(conexion, resultado):
         cursor = conexion.cursor()
         query = '''
             INSERT INTO resultados (url, velocidad_descarga, velocidad_carga, velocidad_pico, velocidad_suelo,
-                                    latencia, jitter, perdida_paquetes, tiempo_total, momento, dispositivo)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                                    latencia, jitter, perdida_paquetes, tiempo_total, dispositivo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         '''
         cursor.execute(query, (resultado['url'], resultado['velocidad_descarga'], resultado['velocidad_carga'],
                                resultado['velocidad_pico'], resultado['velocidad_suelo'], resultado['latencia'],
                                resultado['jitter'], resultado['perdida_paquetes'], resultado['tiempo_total'],
-                               resultado['momento'], resultado['dispositivo']))
+                               resultado['dispositivo']))
         conexion.commit()
         print(f"Resultado almacenado para la URL: {resultado['url']}")
     except Error as e:
