@@ -26,7 +26,7 @@ class Aplicacion:
         self.url_entry.pack(pady=5)
 
         # Botón para realizar una prueba
-        self.boton_realizar_prueba = tk.Button(self.master, text="Realizar Prueba", command=self.realizar_prueba)
+        self.boton_realizar_prueba = tk.Button(self.master, text="Realizar Prueba", bg="#CCA9DD", command=self.realizar_prueba)
         self.boton_realizar_prueba.pack(pady=10)
 
         # Botón para ver resultados de las pruebas
@@ -34,7 +34,7 @@ class Aplicacion:
         self.boton_ver_resultados.pack(pady=10)
 
         # Botón para generar un informe
-        self.boton_generar_informe = tk.Button(self.master, text="Generar Informe", command=self.generar_informe)
+        self.boton_generar_informe = tk.Button(self.master, text="Generar Informe", bg="#CCA9DD", command=self.generar_informe)
         self.boton_generar_informe.pack(pady=10)
 
         # Botón para programar una prueba
@@ -42,7 +42,7 @@ class Aplicacion:
         self.boton_programar_prueba.pack(pady=10)
 
         # Botón para visualizar métricas
-        self.boton_visualizar_metricas = tk.Button(self.master, text="Visualizar Métricas", command=self.visualizar_metricas)
+        self.boton_visualizar_metricas = tk.Button(self.master, text="Visualizar Métricas", bg="#CCA9DD", command=self.visualizar_metricas)
         self.boton_visualizar_metricas.pack(pady=10)
 
         # Botón para limpiar caché
