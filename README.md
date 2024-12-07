@@ -12,7 +12,7 @@
 5. Comparación de rendimiento entre URLs: Mostrar una interfaz que permita seleccionar múltiples URLs para evaluar y comparar sus métricas en tiempo real y en diferentes condiciones.
 6. Configuración de variables de control: Establecer el servidor de prueba (p. ej., un servidor de Speedtest específico) para garantizar que las pruebas sean consistentes y comparables.
 
-### Proyecto en desarrollo, clase de 10am - 1pm. Calificación: ?/20.
+### Proyecto presentado con éxito, lunes 25/11/24 clase de 10am - 1pm. Calificación: 17/20.
 
 ### Sobre los archivos:
 - app.py: Punto de entrada de la aplicación.
